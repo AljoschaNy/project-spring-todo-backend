@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +17,11 @@ public class ToDoController {
     @GetMapping
     public List<ToDo> getAllToDos() {
         return toDoService.getAllToDos();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<ToDo> getToDoDetails(@PathVariable String id) {
+        return toDoService.getToDoDetails(id);
     }
 
     @PostMapping

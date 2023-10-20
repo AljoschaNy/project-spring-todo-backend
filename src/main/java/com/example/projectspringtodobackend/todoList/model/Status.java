@@ -2,8 +2,8 @@ package com.example.projectspringtodobackend.todoList.model;
 
 public enum Status {
     OPEN,
-    DOING,
-    CLOSED
+    IN_PROGRESS,
+    DONE
 
 
 }

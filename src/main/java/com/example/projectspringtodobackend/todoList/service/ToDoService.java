@@ -20,7 +20,7 @@ public class ToDoService {
         ToDo toDo = ToDo.builder()
                 .id(null)
                 .description(task)
-                .status(Status.DONE)
+                .status(Status.OPEN)
                 .build();
 
         return toDoRepo.save(toDo);

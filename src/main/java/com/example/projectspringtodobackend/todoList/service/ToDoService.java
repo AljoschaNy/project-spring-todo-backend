@@ -6,6 +6,8 @@ import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ToDoService {
@@ -20,5 +22,9 @@ public class ToDoService {
                 .build();
 
         return toDoRepo.save(toDo);
+    }
+
+    public List<ToDo> getAllToDos() {
+        return toDoRepo.findAll();
     }
 }

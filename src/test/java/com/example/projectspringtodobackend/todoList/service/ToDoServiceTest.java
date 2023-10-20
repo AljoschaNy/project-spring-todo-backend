@@ -10,8 +10,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ToDoServiceTest {
     private final ToDoRepo mockToDoRepo = mock(ToDoRepo.class);
@@ -20,13 +19,14 @@ class ToDoServiceTest {
     @Test
     public void addToDo() {
         ToDo expected = ToDo.builder()
-                .id(UUID.randomUUID().toString())
-                .description("test")
+                .id(null)
+                .description("test123")
                 .status(Status.OPEN)
                 .build();
         when(mockToDoRepo.save(any(ToDo.class))).thenReturn(expected);
-        ToDo actual = toDoService.addToDo(expected);
+        ToDo actual = toDoService.addToDo(expected.description());
+        verify(mockToDoRepo).save(expected);
         assertEquals(expected,actual);
-    }
 
+    }
 }

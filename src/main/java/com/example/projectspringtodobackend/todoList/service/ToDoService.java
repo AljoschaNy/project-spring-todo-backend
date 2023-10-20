@@ -1,5 +1,6 @@
 package com.example.projectspringtodobackend.todoList.service;
 
+import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +28,9 @@ public class ToDoService {
 
     public List<ToDo> getAllToDos() {
         return toDoRepo.findAll();
+    }
+
+    public Optional<ToDo> getToDoDetails(String id) throws NoSuchTaskException {
+        return Optional.of(toDoRepo.findById(id)).orElseThrow(NoSuchTaskException::new);
     }
 }

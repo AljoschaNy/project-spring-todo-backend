@@ -6,6 +6,7 @@ import com.example.projectspringtodobackend.todoList.model.ToDoToSave;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,18 @@ class ToDoServiceTest {
         ToDo actual = toDoService.addToDo(expected.description());
         verify(mockToDoRepo).save(expected);
         assertEquals(expected,actual);
+    }
 
+    @Test
+    public void getAllToDos() {
+        List<ToDo> expected = List.of(
+            ToDo.builder().id(null).description("test").status(Status.OPEN).build(),
+            ToDo.builder().id(null).description("test").status(Status.OPEN).build()
+        );
+
+        when(mockToDoRepo.findAll()).thenReturn(expected);
+        List<ToDo> actual = toDoService.getAllToDos();
+        verify(mockToDoRepo).findAll();
+        assertEquals(expected,actual);
     }
 }

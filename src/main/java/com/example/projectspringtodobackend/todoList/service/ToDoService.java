@@ -14,16 +14,8 @@ import java.util.Optional;
 public class ToDoService {
     private final ToDoRepo toDoRepo;
 
-    public ToDo addToDo(String task) {
-        ToDo toDo = ToDo.builder()
-                .id(null)
-                .description(task)
-                .status(Status.OPEN)
-                .build();
-        System.out.println(toDo);
-        ToDo test = toDoRepo.save(toDo);
-        System.out.println(test);
-        return test;
+    public ToDo addToDo(ToDo toDo) {
+        return toDoRepo.save(toDo);
     }
 
     public List<ToDo> getAllToDos() {

@@ -25,7 +25,7 @@ class ToDoServiceTest {
                 .status(Status.OPEN)
                 .build();
         when(mockToDoRepo.save(any(ToDo.class))).thenReturn(expected);
-        ToDo actual = toDoService.addToDo(expected.description());
+        ToDo actual = toDoService.addToDo(expected);
         verify(mockToDoRepo).save(expected);
         assertEquals(expected,actual);
     }

@@ -26,7 +26,7 @@ public class ToDoController {
     }
 
     @PostMapping
-    public ToDo addToDo(@RequestBody String toDo) {
+    public ToDo addToDo(@RequestBody ToDo toDo) {
         return toDoService.addToDo(toDo);
     }
 

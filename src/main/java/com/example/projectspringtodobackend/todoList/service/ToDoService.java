@@ -36,4 +36,9 @@ public class ToDoService {
                 .build();
         return addToDo(newToDo);
     }
+
+    public void deleteToDo(String id) {
+        Optional<ToDo> toDoToDelete = getToDoById(id);
+        toDoToDelete.ifPresent(toDoRepo::delete);
+    }
 }

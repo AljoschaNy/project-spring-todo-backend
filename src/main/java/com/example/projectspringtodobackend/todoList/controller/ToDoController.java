@@ -1,5 +1,6 @@
 package com.example.projectspringtodobackend.todoList.controller;
 
+import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
 import com.example.projectspringtodobackend.todoList.service.ToDoService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,17 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<ToDo> getToDoDetails(@PathVariable String id) {
-        return toDoService.getToDoDetails(id);
+    public Optional<ToDo> getToDoById(@PathVariable String id) {
+        return toDoService.getToDoById(id);
     }
 
     @PostMapping
     public ToDo addToDo(@RequestBody String toDo) {
         return toDoService.addToDo(toDo);
+    }
+
+    @PutMapping("/{id}")
+    public ToDo updateToDo(@PathVariable String id, @RequestBody String description, Status status) {
+        return toDoService.updateToDo(id, description,status);
     }
 }

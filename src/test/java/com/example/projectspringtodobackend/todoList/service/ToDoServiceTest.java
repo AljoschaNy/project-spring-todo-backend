@@ -3,14 +3,11 @@ package com.example.projectspringtodobackend.todoList.service;
 import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
-import com.example.projectspringtodobackend.todoList.model.ToDoToSave;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +52,7 @@ class ToDoServiceTest {
                 .build();
 
         when(mockToDoRepo.findById(expected.id())).thenReturn(Optional.of(expected));
-        Optional<ToDo> actual = toDoService.getToDoDetails(expected.id());
+        Optional<ToDo> actual = toDoService.getToDoById(expected.id());
         verify(mockToDoRepo).findById(expected.id());
         assertEquals(Optional.of(expected),actual);
     }
@@ -63,7 +60,7 @@ class ToDoServiceTest {
     @Test
     public void getToDoDetails_invalidId() {
         when(mockToDoRepo.findById("12")).thenThrow(NoSuchTaskException.class);
-        assertThrows(NoSuchTaskException.class, () -> toDoService.getToDoDetails("12"));
+        assertThrows(NoSuchTaskException.class, () -> toDoService.getToDoById("12"));
         verify(mockToDoRepo).findById("12");
     }
 }

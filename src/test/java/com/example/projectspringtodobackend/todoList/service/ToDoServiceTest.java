@@ -3,6 +3,7 @@ package com.example.projectspringtodobackend.todoList.service;
 import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
+import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +45,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    public void getToDoDetails_validId() throws NoSuchTaskException {
+    public void getToDoById_validId() throws NoSuchTaskException {
         ToDo expected = ToDo.builder()
                 .id("12")
                 .description("test")
@@ -58,9 +59,36 @@ class ToDoServiceTest {
     }
 
     @Test
-    public void getToDoDetails_invalidId() {
+    public void getToDoById_invalidId() {
         when(mockToDoRepo.findById("12")).thenThrow(NoSuchTaskException.class);
         assertThrows(NoSuchTaskException.class, () -> toDoService.getToDoById("12"));
         verify(mockToDoRepo).findById("12");
+    }
+
+    @Test
+    public void updateToDo() {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        ToDoUpdate toDoUpdate = ToDoUpdate.builder()
+                .description("TestTest")
+                .status(Status.IN_PROGRESS)
+                .build();
+        ToDo expect = ToDo.builder()
+                .id(toDo.id())
+                .description(toDoUpdate.description())
+                .status(toDoUpdate.status())
+                .build();
+
+        when(mockToDoRepo.findById(toDo.id())).thenReturn(Optional.of(toDo));
+        when(mockToDoRepo.save(any(ToDo.class))).thenReturn(expect);
+
+        ToDo actual = toDoService.updateToDo(toDo.id(),toDoUpdate);
+        verify(mockToDoRepo).findById(toDo.id());
+        verify(mockToDoRepo).save(expect);
+
+        assertEquals(expect,actual);
     }
 }

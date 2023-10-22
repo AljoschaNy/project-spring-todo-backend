@@ -1,8 +1,9 @@
 package com.example.projectspringtodobackend.todoList.service;
 
 import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
-import com.example.projectspringtodobackend.todoList.model.Status;
-import com.example.projectspringtodobackend.todoList.model.ToDo;import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
+import com.example.projectspringtodobackend.todoList.model.ToDo;
+import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
+import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,13 @@ public class ToDoService {
         return Optional.of(toDoRepo.findById(id)).orElseThrow(NoSuchTaskException::new);
     }
 
-    public ToDo updateToDo(String id, String description, Status status) {
+    public ToDo updateToDo(String id, ToDoUpdate toDoUpdate) {
         ToDo legacy = getToDoById(id).orElseThrow();
-        ToDo newToDo = new ToDo(legacy.id(), description, status);
-        toDoRepo.delete(legacy);
-        return toDoRepo.save(newToDo);
-        //return new ToDoUpdate(newToDo.description(), newToDo.status());
+        ToDo newToDo = ToDo.builder()
+                .id(legacy.id())
+                .description(toDoUpdate.description())
+                .status(toDoUpdate.status())
+                .build();
+        return addToDo(newToDo);
     }
 }

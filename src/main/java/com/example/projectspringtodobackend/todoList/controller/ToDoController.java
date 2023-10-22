@@ -1,7 +1,7 @@
 package com.example.projectspringtodobackend.todoList.controller;
 
-import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
+import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class ToDoController {
     }
 
     @PutMapping("/{id}")
-    public ToDo updateToDo(@PathVariable String id, @RequestBody String description, Status status) {
-        return toDoService.updateToDo(id, description,status);
+    public ToDo updateToDo(@PathVariable String id, @RequestBody ToDoUpdate toDoUpdate) {
+        return toDoService.updateToDo(id, toDoUpdate);
     }
 }

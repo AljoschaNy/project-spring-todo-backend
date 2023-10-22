@@ -91,4 +91,18 @@ class ToDoServiceTest {
 
         assertEquals(expect,actual);
     }
+
+    @Test
+    public void deleteToDo() {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        when(mockToDoRepo.findById("1")).thenReturn(Optional.of(toDo));
+
+        toDoService.deleteToDo("1");
+        verify(mockToDoRepo).findById("1");
+        verify(mockToDoRepo).delete(toDo);
+    }
 }

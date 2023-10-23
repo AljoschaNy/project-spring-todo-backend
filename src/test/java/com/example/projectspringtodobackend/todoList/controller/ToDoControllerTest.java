@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -39,6 +40,7 @@ class ToDoControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAllToDos_withOneToDo_returnToDoListOf1() throws Exception {
         ToDo toDo = ToDo.builder()
                 .id("1")
@@ -55,6 +57,7 @@ class ToDoControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAllToDos_withTwoToDos_returnToDoListOf2() throws Exception {
         ToDo toDo = ToDo.builder()
                 .id("1")
@@ -69,26 +72,40 @@ class ToDoControllerTest {
         List<ToDo> toDoList = List.of(toDo,toDo2);
         toDoRepo.save(toDo);
         toDoRepo.save(toDo2);
-        String toDoListAsJson = objectMapper.writeValueAsString(toDoList);
+        String toDoListAsJSON = objectMapper.writeValueAsString(toDoList);
 
         mockMvc.perform(get(baseUri))
                 .andExpect(status().isOk())
-                .andExpect(content().json(toDoListAsJson));
+                .andExpect(content().json(toDoListAsJSON));
     }
 
     @Test
-    void getToDoById() {
+    @DirtiesContext
+    void getToDoById_validId_returnToDo() throws Exception {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        String toDoAsJSON = objectMapper.writeValueAsString(toDo);
+        toDoRepo.save(toDo);
+        mockMvc.perform(get(baseUri + "/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toDoAsJSON));
     }
 
     @Test
+    @DirtiesContext
     void addToDo() {
     }
 
     @Test
+    @DirtiesContext
     void updateToDo() {
     }
 
     @Test
+    @DirtiesContext
     void deleteToDo() {
     }
 }

@@ -2,12 +2,14 @@ package com.example.projectspringtodobackend.todoList.controller;
 
 import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
+import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -94,16 +96,62 @@ class ToDoControllerTest {
 
     @Test
     @DirtiesContext
-    void addToDo() {
+    void addToDo() throws Exception {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        String toDoAsJSON = objectMapper.writeValueAsString(toDo);
+        mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(toDoAsJSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toDoAsJSON));
     }
 
     @Test
     @DirtiesContext
-    void updateToDo() {
+    void updateToDo() throws Exception {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        ToDoUpdate update = ToDoUpdate.builder()
+                .description("testtest")
+                .status(Status.IN_PROGRESS)
+                .build();
+        ToDo expected = ToDo.builder()
+                .id("1")
+                .description("testtest")
+                .status(Status.IN_PROGRESS)
+                .build();
+        String updateAsJson = objectMapper.writeValueAsString(update);
+        String expectedAsJSON = objectMapper.writeValueAsString(expected);
+        toDoRepo.save(toDo);
+
+        mockMvc.perform(put(baseUri + "/" + expected.id())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateAsJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedAsJSON));
     }
 
     @Test
     @DirtiesContext
-    void deleteToDo() {
+    void deleteToDo() throws Exception {
+        ToDo toDo = ToDo.builder()
+                .id("1")
+                .description("test")
+                .status(Status.OPEN)
+                .build();
+        toDoRepo.save(toDo);
+        List<ToDo> expectedList = List.of();
+        String expectedListAsJson = objectMapper.writeValueAsString(expectedList);
+
+        mockMvc.perform(delete(baseUri + "/" + toDo.id()))
+                .andExpect(status().isOk());
+        mockMvc.perform((get(baseUri)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedListAsJson));
     }
 }

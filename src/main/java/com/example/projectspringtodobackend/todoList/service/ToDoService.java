@@ -16,19 +16,27 @@ public class ToDoService {
     private final ToDoRepo toDoRepo;
 
     public ToDo addToDo(ToDo toDo) {
-        return toDoRepo.save(toDo);
+        ToDo toDoToSave = toDoRepo.save(toDo);
+        System.out.println(toDoToSave.id());
+        return toDoToSave;
     }
 
     public List<ToDo> getAllToDos() {
         return toDoRepo.findAll();
     }
 
-    public Optional<ToDo> getToDoById(String id) throws NoSuchTaskException {
-        return Optional.of(toDoRepo.findById(id)).orElseThrow(NoSuchTaskException::new);
+    public ToDo getToDoById(String id) throws NoSuchTaskException {
+        Optional<ToDo> toDo = toDoRepo.findById(id);
+        System.out.println(toDo);
+        if(toDo.isPresent()) {
+            return toDo.get();
+        } else {
+            throw new NoSuchTaskException();
+        }
     }
 
     public ToDo updateToDo(String id, ToDoUpdate toDoUpdate) {
-        ToDo legacy = getToDoById(id).orElseThrow();
+        ToDo legacy = getToDoById(id);
         ToDo newToDo = ToDo.builder()
                 .id(legacy.id())
                 .description(toDoUpdate.description())
@@ -38,7 +46,6 @@ public class ToDoService {
     }
 
     public void deleteToDo(String id) {
-        Optional<ToDo> toDoToDelete = getToDoById(id);
-        toDoToDelete.ifPresent(toDoRepo::delete);
+        toDoRepo.delete(getToDoById(id));
     }
 }

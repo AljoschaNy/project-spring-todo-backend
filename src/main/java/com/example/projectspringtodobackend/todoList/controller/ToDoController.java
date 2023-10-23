@@ -1,5 +1,6 @@
 package com.example.projectspringtodobackend.todoList.controller;
 
+import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
 import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.service.ToDoService;
@@ -21,7 +22,7 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<ToDo> getToDoById(@PathVariable String id) {
+    public ToDo getToDoById(@PathVariable String id) {
         return toDoService.getToDoById(id);
     }
 

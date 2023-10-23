@@ -53,9 +53,9 @@ class ToDoServiceTest {
                 .build();
 
         when(mockToDoRepo.findById(expected.id())).thenReturn(Optional.of(expected));
-        Optional<ToDo> actual = toDoService.getToDoById(expected.id());
+        ToDo actual = toDoService.getToDoById(expected.id());
         verify(mockToDoRepo).findById(expected.id());
-        assertEquals(Optional.of(expected),actual);
+        assertEquals(Optional.of(expected).get(),actual);
     }
 
     @Test

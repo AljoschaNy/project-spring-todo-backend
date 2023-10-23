@@ -1,6 +1,5 @@
 package com.example.projectspringtodobackend.todoList.controller;
 
-import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
 import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.service.ToDoService;
@@ -8,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

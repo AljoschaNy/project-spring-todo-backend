@@ -23,16 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ToDoControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ToDoRepo toDoRepo;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     private final String baseUri = "/api/todo";
 
     @Test
+    @DirtiesContext
     void getAllToDos_noToDos_returnEmptyList() throws Exception {
         mockMvc.perform(get(baseUri))
                 .andExpect(status().isOk())

@@ -16,9 +16,7 @@ public class ToDoService {
     private final ToDoRepo toDoRepo;
 
     public ToDo addToDo(ToDo toDo) {
-        ToDo toDoToSave = toDoRepo.save(toDo);
-        System.out.println(toDoToSave.id());
-        return toDoToSave;
+        return toDoRepo.save(toDo);
     }
 
     public List<ToDo> getAllToDos() {

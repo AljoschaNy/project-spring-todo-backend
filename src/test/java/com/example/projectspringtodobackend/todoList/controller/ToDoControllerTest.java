@@ -1,10 +1,12 @@
 package com.example.projectspringtodobackend.todoList.controller;
 
+import com.example.projectspringtodobackend.todoList.exception.NoSuchTaskException;
 import com.example.projectspringtodobackend.todoList.model.Status;
 import com.example.projectspringtodobackend.todoList.model.ToDo;
 import com.example.projectspringtodobackend.todoList.model.ToDoUpdate;
 import com.example.projectspringtodobackend.todoList.repository.ToDoRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -92,6 +94,12 @@ class ToDoControllerTest {
         mockMvc.perform(get(baseUri + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(toDoAsJSON));
+    }
+
+    @Test
+    @DirtiesContext
+    void getToDoById_invalidId_throwException() {
+        assertThrows(ServletException.class, () -> mockMvc.perform(get(baseUri+ "/1")));
     }
 
     @Test
